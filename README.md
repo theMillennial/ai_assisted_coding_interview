@@ -79,7 +79,7 @@ For Kotlin backend:
 - Gradle (for building the project)
 
 For Python backend:
-- Python 3.8 or higher
+- Python 3.10–3.14
 - Poetry (for dependency management)
 
 For frontend:

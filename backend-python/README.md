@@ -28,6 +28,9 @@ backend-python/
 
 ## Setup
 
+**Requires Python 3.10–3.14.** Newer versions are not yet supported, as some
+dependencies do not publish wheels for them.
+
 1. Install Poetry:
    ```bash
    curl -sSL https://install.python-poetry.org | python3 -

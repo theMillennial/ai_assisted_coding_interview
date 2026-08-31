@@ -6,12 +6,12 @@ authors = ["Your Name <your.email@example.com>"]
 packages = [{include = "app", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.10,<3.15"
 fastapi = "^0.110.0"
 uvicorn = "^0.27.1"
 sqlalchemy = "^2.0.27"
-strawberry-graphql = {extras = ["fastapi"], version = "^0.278.1"}
-pydantic = {extras = ["email"], version = "^2.6.3"}
+strawberry-graphql = {extras = ["fastapi"], version = ">=0.284,<1.0"}
+pydantic = {extras = ["email"], version = "^2.12"}
 alembic = "^1.13.1"
 python-dotenv = "^1.0.1"
 email-validator = "^2.1.0"
@@ -29,7 +29,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 100
-target-version = ["py39"]
+target-version = ["py310"]
 
 [tool.isort]
 profile = "black"
