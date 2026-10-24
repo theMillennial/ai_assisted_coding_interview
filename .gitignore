@@ -89,8 +89,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
+# SQLite
+*.db-shm
+*.db-wal
+
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+

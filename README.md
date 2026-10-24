@@ -22,6 +22,17 @@ brex-interview-playground/
 │   │           ├── graphql/         # GraphQL schema
 │   │           └── schema/          # Database schema
 │   └── test/                        # Test files
+├── backend-nodejs/    # Node.js Express & Apollo Server Backend (TypeScript)
+│   ├── src/
+│   │   ├── api/
+│   │   │   ├── graphql/     # GraphQL schema and resolvers
+│   │   │   └── rest/        # REST API endpoints
+│   │   ├── config/          # Application configuration
+│   │   ├── database/        # SQLite connection & seed logic
+│   │   ├── models/          # TypeScript domain models
+│   │   ├── app.ts           # Express application & Apollo Server factory
+│   │   └── index.ts         # Server entry point
+│   └── tests/               # Jest test files
 ├── backend-python/   # Python FastAPI Backend (Alternative)
 │   ├── src/
 │   │   └── app/
@@ -46,7 +57,7 @@ brex-interview-playground/
 
 ### Backend Options
 
-You can choose between two backend implementations:
+You can choose between three backend implementations:
 
 #### Kotlin Spring Boot Backend
 
@@ -54,6 +65,14 @@ The Kotlin backend is a Spring Boot application that provides:
 - REST and GraphQL APIs for simple message operations
 - H2 in-memory database
 - Basic message CRUD functionality
+
+#### Node.js Express & Apollo Server Backend (TypeScript)
+
+The Node.js backend is an Express and Apollo Server application that provides:
+- REST and GraphQL APIs for simple message operations
+- TypeScript for end-to-end type safety
+- SQLite database via `better-sqlite3` with startup seeding
+- Full test suite with Jest and Supertest
 
 #### Python FastAPI Backend (Alternative)
 
@@ -77,6 +96,10 @@ The frontend is built with the T3 Stack, featuring:
 For Kotlin backend:
 - JDK 11 or higher
 - Gradle (for building the project)
+
+For Node.js backend:
+- Node.js 18 or higher
+- npm
 
 For Python backend:
 - Python 3.8 or higher
@@ -108,7 +131,25 @@ For frontend:
       - i.e. `http://localhost:8080/api/messages/latest`
    - GraphQL API: `http://localhost:8080/graphql`
 
-#### Option 2: Python Backend
+#### Option 2: Node.js Backend
+
+1. **Install Dependencies**:
+   ```bash
+   cd backend-nodejs
+   npm install
+   ```
+
+2. **Run the Development Server**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Access the Application**:
+   - REST API: `http://localhost:8080/api/`
+      - i.e. `http://localhost:8080/api/messages/latest`
+   - GraphQL API & Playground: `http://localhost:8080/graphql`
+
+#### Option 3: Python Backend
 
 1. **Install Poetry** (if not already installed):
    ```bash
@@ -158,6 +199,7 @@ For frontend:
 #### Testing GraphQL
 - Access the GraphQL IDE:
   - For Kotlin backend: `http://localhost:8080/graphiql`
+  - For Node.js backend: `http://localhost:8080/graphql`
   - For Python backend: `http://localhost:8080/graphql`
 
 - **Example Query**:
@@ -188,6 +230,12 @@ For frontend:
 ```bash
 cd backend-kotlin
 ./gradlew test
+```
+
+#### Node.js Backend Tests:
+```bash
+cd backend-nodejs
+npm test
 ```
 
 #### Python Backend Tests:
