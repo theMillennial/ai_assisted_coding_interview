@@ -3,16 +3,31 @@ import crypto from 'crypto';
 import Database from 'better-sqlite3';
 import { Message } from '../../models/message';
 
+/** Raw row shape returned by SQLite for the `messages` table. */
 interface MessageRow {
   id: string;
   content: string;
   created_at: string;
 }
 
+/**
+ * Builds the Express router for the message REST API, mounted at `/api/messages`.
+ *
+ * Responses include the timestamp as both `createdAt` and `created_at` so clients
+ * written against either naming convention keep working.
+ *
+ * @param db - SQLite connection the handlers read from and write to.
+ * @returns A router exposing create, latest, list, and get-by-id endpoints.
+ */
 export function createMessageRouter(db: Database.Database): Router {
   const router = Router();
 
-  // POST /api/messages - Create a new message
+  /**
+   * POST /api/messages - Create a new message.
+   *
+   * Body: `{ content?: string }`. Missing or blank content falls back to "Hello World".
+   * Responds 200 with the created message, or 422 if `content` is not a string.
+   */
   router.post('/', (req: Request, res: Response) => {
     const { content } = req.body || {};
     const id = crypto.randomUUID();
@@ -37,7 +52,12 @@ export function createMessageRouter(db: Database.Database): Router {
     res.json(message);
   });
 
-  // GET /api/messages/latest - Get latest messages
+  /**
+   * GET /api/messages/latest - Get the most recent messages, newest first.
+   *
+   * Query: `limit` (default 10; non-numeric values fall back to the default).
+   * Registered before `/:id` so "latest" is not treated as a message ID.
+   */
   router.get('/latest', (req: Request, res: Response) => {
     const limitParam = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
     const limit = isNaN(limitParam) ? 10 : limitParam;
@@ -58,7 +78,12 @@ export function createMessageRouter(db: Database.Database): Router {
     res.json(messages);
   });
 
-  // GET /api/messages - List messages with pagination
+  /**
+   * GET /api/messages - List messages with offset pagination, in storage order.
+   *
+   * Query: `skip` (default 0) and `limit` (default 100); non-numeric values fall
+   * back to their defaults.
+   */
   router.get('/', (req: Request, res: Response) => {
     const skipParam = req.query.skip ? parseInt(req.query.skip as string, 10) : 0;
     const limitParam = req.query.limit ? parseInt(req.query.limit as string, 10) : 100;
@@ -80,7 +105,11 @@ export function createMessageRouter(db: Database.Database): Router {
     res.json(messages);
   });
 
-  // GET /api/messages/:id - Get message by ID
+  /**
+   * GET /api/messages/:id - Get a single message by its UUID.
+   *
+   * Responds 200 with the message, or 404 `{ detail: 'Message not found' }`.
+   */
   router.get('/:id', (req: Request, res: Response) => {
     const { id } = req.params;
     const row = db.prepare(`
