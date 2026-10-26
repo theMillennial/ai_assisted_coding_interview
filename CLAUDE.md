@@ -70,3 +70,14 @@ After frontend edits: run `check`.
 - Handle all four UI states explicitly: **loading, empty, error, success**.
 - Give feedback on user actions: disable buttons while a mutation is in flight, show status badges, and show inline success/error messages. No toast library. If toasts are needed, write a small component.
 - Style with Tailwind utility classes. Keep components small, and pull out reusable pieces into `src/components/` once they're used twice.
+
+### Logging & Observability Standards
+- **Zero Console Litter:** Never inject ad-hoc `console.log` statements inside business logic, database queries, or route handlers.
+- **HTTP Visibility:** Mount a lightweight request logger on the Express app that logs formatted requests: `[METHOD] /path -> [STATUS] ([LATENCY]ms)`.
+- **Error Observability:** Inside the centralized error handler (`errorHandler.ts`), log unexpected 500 exceptions with `console.error({ message: err.message, stack: err.stack, path: req.path })`. For expected 4xx client errors (e.g., validation, insufficient funds), do not log stack traces.
+- **Test Output:** Keep test runners (`npm test`) clean and silent on success. Tests should only emit output when an assertion fails.
+
+- **Request Payload Logging:** 
+  - For mutations (`POST`, `PUT`, `PATCH`), include the sanitized `req.body` in the HTTP development logger.
+  - Do not log request bodies for `GET` or `DELETE` requests.
+  - Never dump passwords, tokens, or raw secrets to stdout.
