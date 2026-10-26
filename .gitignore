@@ -89,7 +89,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# SQLite
+# SQLite (databases are recreated and seeded on startup; never commit them)
+*.db
 *.db-shm
 *.db-wal
 
